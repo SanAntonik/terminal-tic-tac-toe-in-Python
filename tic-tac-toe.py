@@ -17,3 +17,22 @@ def grid(matrix, sep="|"):
     return "Current grid"
 
 print(grid(matrix))
+
+# thanks to https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response/23294659#23294659
+def get_valid_int_input(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+        except ValueError:
+            print("\nINVALID INPUT!\nYou can only pass integers from 0 to 2")
+            continue
+
+        if value < 0 or value > 2:
+            print("\nINVALID INPUT!\nYou can only pass integers from 0 to 2")
+            continue
+        else:
+            break
+    return value
+
+p1_x = get_valid_int_input("\nEnter x value: ")
+print(p1_x)
