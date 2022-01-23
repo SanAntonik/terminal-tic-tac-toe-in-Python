@@ -1,5 +1,6 @@
-def grid(matrix, sep="|"):
-    print(f"\n{23 * sep}")
+def grid(move, sep="|"):
+    print(f"\n\n{7 * '#'} Move #{move} {7 * '#'}")
+    print(f"{23 * sep}")
     for row in range(len(matrix)):
         print(f"{sep}{sep}     {sep}{sep}     {sep}{sep}     {sep}{sep}")
         for column in range(len(matrix[row])):
@@ -7,10 +8,9 @@ def grid(matrix, sep="|"):
         print(f"{sep}{sep}")
         print(f"{sep}{sep}     {sep}{sep}     {sep}{sep}     {sep}{sep}")
         print(f"{23 * sep}")
-    return "Current grid"
 
 
-# this function compeleted thanks to https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response/23294659#23294659
+# thanks to https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response/23294659#23294659
 # we're looking for an integer from 0 to 2. Other values won't pass.
 def get_valid_input(prompt):
     while True:
@@ -61,25 +61,16 @@ def count_3s(kind_of_check, X_count, O_count):
 
 def win():
     # horizontal check
-    # for row in matrix:
-    #     X_count = 0
-    #     O_count = 0
-    #     for elem in row:
-    #         if elem == "X":
-    #             X_count += 1
-    #         elif elem == "O":
-    #             O_count += 1
-
-    for i in range(0, len(matrix)):
+    for row in matrix:
         X_count = 0
         O_count = 0
-        for k in range(0, len(matrix)):
-            if matrix[i][k] == "X":
+        for elem in row:
+            if elem == "X":
                 X_count += 1
-            elif matrix[i][k] == "O":
+            elif elem == "O":
                 O_count += 1
-        if count_3s("horizontal", X_count, O_count):
-            return True
+    if count_3s("horizontal", X_count, O_count):
+        return True
 
     # vertical check
     for i in range(0, len(matrix)):
@@ -89,8 +80,7 @@ def win():
             if matrix[k][i] == "X":
                 X_count += 1
             elif matrix[k][i] == "O":
-                O_count += 1
-        
+                O_count += 1      
         if count_3s("vertical", X_count, O_count):
             return True        
 
@@ -123,27 +113,27 @@ def win():
 
 
 matrix = [[" " for x in range(3)] for y in range(3)] 
-print(grid(matrix))
-for x in range(0, 10):
+def main():
+    move = 1
+    grid(move)
+    while True:
+        if move % 2 == 1:
+            player_numb = 1
+            symbol = "X"
+        else:
+            player_numb = 2
+            symbol = "O"
 
-    p1_x, p1_y = check_position_availability(get_valid_input("\nPlayer 1, enter x value: "), get_valid_input("Player 1, enter y value: "))
-    matrix[p1_x][p1_y] = "X"
-    print(grid(matrix))
+        x = get_valid_input(f"\nPlayer {player_numb}, enter x value: ")
+        y = get_valid_input(f"Player {player_numb}, enter y value: ")
+        x, y = check_position_availability(x, y)
+        matrix[x][y] = symbol
+        move += 1
+        grid(move)
 
-    if win():
-        break
-
-    if draw():
-        break
-
-    p2_x = get_valid_input("\nPlayer 2, enter x value: ")
-    p2_y = get_valid_input("Player 2, enter y value: ")
-    p2_x, p2_y = check_position_availability(p2_x, p2_y)
-    print(p2_x, p2_y)
-    matrix[p2_x][p2_y] = "O"
-    print(grid(matrix))
-
-    if win():
-        break
+        if win() or draw():
+            break
 
 
+if __name__=='__main__':
+    main()
